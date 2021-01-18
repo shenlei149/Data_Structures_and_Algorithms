@@ -4,13 +4,13 @@
 #define InfraMemory_ALLOC(nbytes) InfraMemory_alloc((nbytes), __FILE__, __LINE__)
 #define InfraMemory_CALLOC(count, nbytes) InfraMemory_calloc((count), (nbytes), __FILE__, __LINE__)
 #define InfraMemory_RESIZE(ptr, nbytes) ((ptr) = InfraMemory_resize((ptr), (nbytes), __FILE__, __LINE__))
-#define InfraMemory_FREE(ptr) ((void)(InfraMemory_free((ptr)), (ptr) = 0))
+#define InfraMemory_FREE(ptr) ((void)(InfraMemory_free((ptr)), (ptr) = NULL))
 
 // allocates an uninitialized block to hold *p and sets p to theaddress of that block.
-#define InfraMemory_NEW(p) ((p) = ALLOC((long)sizeof *(p)))
+#define InfraMemory_NEW(p) ((p) = InfraMemory_ALLOC((long)sizeof *(p)))
 
 // same as NEW(p), but also clears the block.
-#define InfraMemory_NEW0(p) ((p) = CALLOC(1, (long)sizeof *(p)))
+#define InfraMemory_NEW0(p) ((p) = InfraMemory_CALLOC(1, (long)sizeof *(p)))
 
 extern void *InfraMemory_alloc(long nbytes, const char *file, int line);
 extern void *InfraMemory_calloc(long count, long nbytes, const char *file, int line);

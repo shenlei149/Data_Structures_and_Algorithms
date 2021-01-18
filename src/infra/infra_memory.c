@@ -6,14 +6,18 @@
 void *InfraMemory_alloc(long nbytes, const char *file, int line)
 {
     InfraAssert_ASSERT(nbytes > 0, file, line);
-    return malloc(nbytes);
+    void *ptr = malloc(nbytes);
+    InfraAssert_ASSERT(ptr, file, line);
+    return ptr;
 }
 
 void *InfraMemory_calloc(long count, long nbytes, const char *file, int line)
 {
     InfraAssert_ASSERT(count > 0, file, line);
     InfraAssert_ASSERT(nbytes > 0, file, line);
-    return calloc(count, nbytes);
+    void *ptr = calloc(count, nbytes);
+    InfraAssert_ASSERT(ptr, file, line);
+    return ptr;
 }
 
 extern void *InfraMemory_resize(void *ptr, long nbytes, const char *file, int line)
@@ -21,6 +25,7 @@ extern void *InfraMemory_resize(void *ptr, long nbytes, const char *file, int li
     InfraAssert_ASSERT(ptr, file, line);
     InfraAssert_ASSERT(nbytes > 0, file, line);
     ptr = realloc(ptr, nbytes);
+    InfraAssert_ASSERT(ptr, file, line);
     return ptr;
 }
 
