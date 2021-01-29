@@ -1,6 +1,8 @@
 #ifndef INFRA_MEMORY_INCLUDED
 #define INFRA_MEMORY_INCLUDED
 
+#include <stdlib.h>
+
 #define InfraMemory_ALLOC(nbytes) InfraMemory_alloc((nbytes), __FILE__, __LINE__)
 #define InfraMemory_CALLOC(count, nbytes) InfraMemory_calloc((count), (nbytes), __FILE__, __LINE__)
 #define InfraMemory_RESIZE(ptr, nbytes) ((ptr) = InfraMemory_resize((ptr), (nbytes), __FILE__, __LINE__))
