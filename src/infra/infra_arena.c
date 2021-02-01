@@ -8,7 +8,7 @@
 
 #define THRESHOLD 10
 
-#define T InfraArena_T
+#define T Arena_T
 
 struct T
 {
@@ -38,18 +38,18 @@ union header
 static T freechunks;
 static int nfree;
 
-T InfraArena_New(void)
+T Arena_New(void)
 {
     T arena;
-    InfraMemory_NEW0(arena);
+    Memory_NEW0(arena);
     return arena;
 }
 
-void InfraArena_Dispose(T *ap)
+void Arena_Dispose(T *ap)
 {
-    InfraAssert_ASSERT(ap && *ap, __FILE__, __LINE__);
-    InfraArena_Free(*ap);
-    InfraMemory_FREE(*ap);
+    Assert_ASSERT(ap && *ap, __FILE__, __LINE__);
+    Arena_Free(*ap);
+    Memory_FREE(*ap);
 }
 
 static T findFitChunk(T chunkPtr, long nbytes)
@@ -63,10 +63,10 @@ static T findFitChunk(T chunkPtr, long nbytes)
     return result;
 }
 
-void *InfraArena_alloc(T arena, long nbytes, const char *file, int line)
+void *Arena_alloc(T arena, long nbytes, const char *file, int line)
 {
-    InfraAssert_ASSERT(arena, file, line);
-    InfraAssert_ASSERT(nbytes > 0, file, line);
+    Assert_ASSERT(arena, file, line);
+    Assert_ASSERT(nbytes > 0, file, line);
 
     // round nbytes up to an alignment boundary
     nbytes = ((nbytes + sizeof(union align) - 1) / (sizeof(union align))) * (sizeof(union align));
@@ -89,7 +89,7 @@ void *InfraArena_alloc(T arena, long nbytes, const char *file, int line)
             else
             {
                 long m = sizeof(union header) + nbytes + 10 * 1024;
-                ptr = InfraMemory_ALLOC(m);
+                ptr = Memory_ALLOC(m);
                 limit = (char *)ptr + m;
             }
 
@@ -106,11 +106,11 @@ void *InfraArena_alloc(T arena, long nbytes, const char *file, int line)
     return chunkPtr->avail - nbytes;
 }
 
-void *InfraArena_calloc(T arena, long count, long nbytes, const char *file, int line)
+void *Arena_calloc(T arena, long count, long nbytes, const char *file, int line)
 {
-    InfraAssert_ASSERT(count > 0, file, line);
+    Assert_ASSERT(count > 0, file, line);
 
-    void *ptr = InfraArena_alloc(arena, count * nbytes, file, line);
+    void *ptr = Arena_alloc(arena, count * nbytes, file, line);
     memset(ptr, '\0', count * nbytes);
     return ptr;
 }
@@ -144,9 +144,9 @@ static void insertFreeChunk(T chunk)
     }
 }
 
-void InfraArena_Free(T arena)
+void Arena_Free(T arena)
 {
-    InfraAssert_ASSERT(arena, __FILE__, __LINE__);
+    Assert_ASSERT(arena, __FILE__, __LINE__);
 
     while (arena->prev)
     {
@@ -163,13 +163,13 @@ void InfraArena_Free(T arena)
         }
         else
         {
-            InfraMemory_FREE(arena->prev);
+            Memory_FREE(arena->prev);
         }
 
         *arena = tmp;
     }
 
-    InfraAssert_ASSERT(arena->prev == NULL, __FILE__, __LINE__);
-    InfraAssert_ASSERT(arena->avail == NULL, __FILE__, __LINE__);
-    InfraAssert_ASSERT(arena->limit == NULL, __FILE__, __LINE__);
+    Assert_ASSERT(arena->prev == NULL, __FILE__, __LINE__);
+    Assert_ASSERT(arena->avail == NULL, __FILE__, __LINE__);
+    Assert_ASSERT(arena->limit == NULL, __FILE__, __LINE__);
 }

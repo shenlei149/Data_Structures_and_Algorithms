@@ -1,16 +1,16 @@
 #include "math_arith.h"
 
-long MathArith_Max(long x, long y)
+long Arith_Max(long x, long y)
 {
     return x > y ? x : y;
 }
 
-long MathArith_Min(long x, long y)
+long Arith_Min(long x, long y)
 {
     return x > y ? y : x;
 }
 
-long MathArith_Div(long x, long y)
+long Arith_Div(long x, long y)
 {
     if (-13 / 5 == -2 &&      // truncates towards 0
         (x < 0) != (y < 0) && // different signs
@@ -25,7 +25,7 @@ long MathArith_Div(long x, long y)
 }
 
 // (x / y) * y + x % y = x
-long MathArith_Mod(long x, long y)
+long Arith_Mod(long x, long y)
 {
     if (-13 / 5 == -2 &&      // truncates towards 0
         (x < 0) != (y < 0) && // different signs
@@ -39,12 +39,12 @@ long MathArith_Mod(long x, long y)
     }
 }
 
-long MathArith_Ceiling(long x, long y)
+long Arith_Ceiling(long x, long y)
 {
-    return MathArith_Div(x, y) + (x % y != 0);
+    return Arith_Div(x, y) + (x % y != 0);
 }
 
-long MathArith_Floor(long x, long y)
+long Arith_Floor(long x, long y)
 {
-    return MathArith_Div(x, y);
+    return Arith_Div(x, y);
 }

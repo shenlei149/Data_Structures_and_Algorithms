@@ -5,8 +5,8 @@
 #include "../infra/infra_memory.h"
 #include "../infra/infra_assert.h"
 
-#define TList ElementarySinglyLinkedList_T
-#define TNode ElementarySinglyLinkedNode_T
+#define TList SinglyLinkedList_T
+#define TNode SinglyLinkedNode_T
 
 struct TList
 {
@@ -21,47 +21,47 @@ struct TNode
     void *item;
 };
 
-TList ElementarySLL_New()
+TList SinglyLinkedList_New()
 {
     TList list;
-    InfraMemory_NEW0(list);
+    Memory_NEW0(list);
     return list;
 }
 
-void ElementarySLL_Free(TList *list)
+void SinglyLinkedList_Free(TList *list)
 {
-    InfraAssert_ASSERT(list && *list, __FILE__, __LINE__);
+    Assert_ASSERT(list && *list, __FILE__, __LINE__);
 
     TNode cur = (*list)->header;
     while (cur != (*list)->tail)
     {
         TNode next = cur->next;
-        InfraMemory_FREE(cur);
+        Memory_FREE(cur);
         cur = next;
     }
 
-    InfraMemory_FREE(cur);
-    InfraMemory_FREE(*list);
+    Memory_FREE(cur);
+    Memory_FREE(*list);
 }
 
-void ElementarySLL_Add(TList list, void *item, ...)
+void SinglyLinkedList_Add(TList list, void *item, ...)
 {
-    InfraAssert_ASSERT(list, __FILE__, __LINE__);
+    Assert_ASSERT(list, __FILE__, __LINE__);
 
     va_list ap;
     va_start(ap, item);
 
     for (; item; item = va_arg(ap, void *))
     {
-        ElementarySLL_AddLast(list, item);
+        SinglyLinkedList_AddLast(list, item);
     }
 
     va_end(ap);
 }
 
-void ElementarySLL_Reverse(TList list)
+void SinglyLinkedList_Reverse(TList list)
 {
-    InfraAssert_ASSERT(list, __FILE__, __LINE__);
+    Assert_ASSERT(list, __FILE__, __LINE__);
 
     if (list->length != 0 && list->length != 1)
     {
@@ -83,9 +83,9 @@ void ElementarySLL_Reverse(TList list)
     }
 }
 
-int ElementarySLL_Length(TList list)
+int SinglyLinkedList_Length(TList list)
 {
-    InfraAssert_ASSERT(list, __FILE__, __LINE__);
+    Assert_ASSERT(list, __FILE__, __LINE__);
 
     return list->length;
 }
@@ -93,14 +93,14 @@ int ElementarySLL_Length(TList list)
 static TNode newNode(void *item)
 {
     TNode newNode;
-    InfraMemory_NEW0(newNode);
+    Memory_NEW0(newNode);
     newNode->item = item;
     return newNode;
 }
 
-void ElementarySLL_AddFirst(TList list, void *item)
+void SinglyLinkedList_AddFirst(TList list, void *item)
 {
-    InfraAssert_ASSERT(list, __FILE__, __LINE__);
+    Assert_ASSERT(list, __FILE__, __LINE__);
 
     TNode new = newNode(item);
     new->next = list->header;
@@ -114,9 +114,9 @@ void ElementarySLL_AddFirst(TList list, void *item)
     list->length++;
 }
 
-void ElementarySLL_RemoveFirst(TList list)
+void SinglyLinkedList_RemoveFirst(TList list)
 {
-    InfraAssert_ASSERT(list, __FILE__, __LINE__);
+    Assert_ASSERT(list, __FILE__, __LINE__);
 
     if (list->header != NULL)
     {
@@ -127,15 +127,15 @@ void ElementarySLL_RemoveFirst(TList list)
             list->tail = NULL;
         }
 
-        InfraMemory_FREE(first);
+        Memory_FREE(first);
 
         list->length--;
     }
 }
 
-void *ElementarySLL_GetFirst(TList list)
+void *SinglyLinkedList_GetFirst(TList list)
 {
-    InfraAssert_ASSERT(list, __FILE__, __LINE__);
+    Assert_ASSERT(list, __FILE__, __LINE__);
 
     if (list->header == NULL)
     {
@@ -145,16 +145,16 @@ void *ElementarySLL_GetFirst(TList list)
     return list->header->item;
 }
 
-TNode ElementarySLL_GetFirstNode(TList list)
+TNode SinglyLinkedList_GetFirstNode(TList list)
 {
-    InfraAssert_ASSERT(list, __FILE__, __LINE__);
+    Assert_ASSERT(list, __FILE__, __LINE__);
 
     return list->header;
 }
 
-void ElementarySLL_AddLast(TList list, void *item)
+void SinglyLinkedList_AddLast(TList list, void *item)
 {
-    InfraAssert_ASSERT(list, __FILE__, __LINE__);
+    Assert_ASSERT(list, __FILE__, __LINE__);
 
     TNode new = newNode(item);
     if (list->length == 0)
@@ -171,9 +171,9 @@ void ElementarySLL_AddLast(TList list, void *item)
     list->length++;
 }
 
-void *ElementarySLL_GetLast(TList list)
+void *SinglyLinkedList_GetLast(TList list)
 {
-    InfraAssert_ASSERT(list, __FILE__, __LINE__);
+    Assert_ASSERT(list, __FILE__, __LINE__);
 
     if (list->tail == NULL)
     {
@@ -183,20 +183,20 @@ void *ElementarySLL_GetLast(TList list)
     return list->tail->item;
 }
 
-TNode ElementarySLL_GetLastNode(TList list)
+TNode SinglyLinkedList_GetLastNode(TList list)
 {
-    InfraAssert_ASSERT(list, __FILE__, __LINE__);
+    Assert_ASSERT(list, __FILE__, __LINE__);
 
     return list->tail;
 }
 
-void ElementarySLL_AddAfter(TList list, TNode node, void *item)
+void SinglyLinkedList_AddAfter(TList list, TNode node, void *item)
 {
-    InfraAssert_ASSERT(list, __FILE__, __LINE__);
-    InfraAssert_ASSERT(node, __FILE__, __LINE__);
+    Assert_ASSERT(list, __FILE__, __LINE__);
+    Assert_ASSERT(node, __FILE__, __LINE__);
     if (list->tail == node)
     {
-        ElementarySLL_AddLast(list, item);
+        SinglyLinkedList_AddLast(list, item);
     }
     else
     {
@@ -208,10 +208,10 @@ void ElementarySLL_AddAfter(TList list, TNode node, void *item)
     }
 }
 
-void ElementarySLL_RemoveAfter(TList list, TNode node)
+void SinglyLinkedList_RemoveAfter(TList list, TNode node)
 {
-    InfraAssert_ASSERT(list, __FILE__, __LINE__);
-    InfraAssert_ASSERT(node, __FILE__, __LINE__);
+    Assert_ASSERT(list, __FILE__, __LINE__);
+    Assert_ASSERT(node, __FILE__, __LINE__);
 
     if (list->tail != node)
     {
@@ -223,13 +223,13 @@ void ElementarySLL_RemoveAfter(TList list, TNode node)
             list->tail = node;
         }
 
-        InfraMemory_FREE(next);
+        Memory_FREE(next);
 
         list->length--;
     }
 }
 
-TNode ElementarySLL_NextNode(TNode node)
+TNode SinglyLinkedList_NextNode(TNode node)
 {
     if (node != NULL)
     {
@@ -239,9 +239,9 @@ TNode ElementarySLL_NextNode(TNode node)
     return NULL;
 }
 
-void *ElementarySLL_GetValue(TNode node)
+void *SinglyLinkedList_GetValue(TNode node)
 {
-    InfraAssert_ASSERT(node, __FILE__, __LINE__);
+    Assert_ASSERT(node, __FILE__, __LINE__);
 
     return node->item;
 }
