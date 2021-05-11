@@ -1,4 +1,5 @@
-# Data_Structures_and_Algorithms
+# C Interface Example
+
 ## Project Structure
 * bin - the final executable file, including test
 * lib - all library dependences
